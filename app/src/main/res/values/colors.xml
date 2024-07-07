@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#39A552</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="date_color">#79828B</color>
+    <color name="desc_color">#42505C</color>
+    <color name="title_color">#79828B</color>
+    <color name="title2_color">#4E5255</color>
+
+
+    <color name="sport_color">#C91C22</color>
+    <color name="health_color">#ED1E79</color>
+    <color name="enviroment_color">#4882CF</color>
+    <color name="Politics_color">#003E90</color>
+    <color name="Business_color">#CF7E48</color>
+    <color name="Science_color">#F2D352</color>
+
+
+</resources>

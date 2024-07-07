@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="newsArticle"
+            type="com.example.domain.model.news.Articles" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <ImageView
+            android:id="@+id/new_item_iv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:src="@drawable/new_image"
+            android:src="@{newsArticle.urlToImage}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@id/new_item_title_tv"
+            app:layout_constraintHeight_percent=".7"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/item_lottieAnimationView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:lottie_rawRes="@raw/animationloading"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_colorFilter="@color/green"
+            app:layout_constraintTop_toTopOf="@id/new_item_iv"
+            app:layout_constraintStart_toStartOf="@id/new_item_iv"
+            app:layout_constraintBottom_toBottomOf="@id/new_item_iv"
+            app:layout_constraintEnd_toEndOf="@id/new_item_iv"
+            app:layout_constraintHeight_percent=".7"
+            app:layout_constraintWidth_percent=".7"
+            android:visibility="gone"
+
+            />
+
+        <TextView
+            android:id="@+id/new_item_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="BBC NEWS"
+            android:text="@{newsArticle.author}"
+            app:layout_constraintTop_toBottomOf="@id/new_item_iv"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/title_color"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/new_item_description_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="BBC NEWS"
+            android:text="@{newsArticle.title}"
+            android:maxLines="2"
+            app:layout_constraintTop_toBottomOf="@id/new_item_title_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/desc_color"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/new_item_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="BBC NEWS"
+            android:text="@{newsArticle.publishedAt}"
+            app:layout_constraintTop_toBottomOf="@id/new_item_description_tv"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/date_color"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
