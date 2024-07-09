@@ -8,4 +8,7 @@ interface getNewSourcesRepo {
     suspend fun getSources(source: String): List<Sources?>
 
     suspend fun getNews(source: String): List<Articles?>
+
+
+    suspend fun getSearchNews(search: String): List<Articles?>
 }

@@ -17,4 +17,9 @@ class getNewsSourcesUseCase @Inject constructor(
     suspend fun getNews(source: String): List<Articles?> {
         return newSourcesRepo.getNews(source)
     }
+
+
+    suspend fun getSearchNews(search: String): List<Articles?> {
+        return newSourcesRepo.getSearchNews(search)
+    }
 }

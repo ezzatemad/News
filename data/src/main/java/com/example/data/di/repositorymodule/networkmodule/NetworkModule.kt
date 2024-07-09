@@ -1,11 +1,13 @@
 package com.example.data.di.repositorymodule.networkmodule
 
+import android.content.Context
 import com.example.data.api.MyApiService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -43,4 +45,11 @@ object NetworkModule {
     ): MyApiService {
         return retrofit.create(MyApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideAppContext(@ApplicationContext context: Context): Context {
+        return context
+    }
+
 }

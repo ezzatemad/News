@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Categories
 import com.example.news.R
 import com.example.news.databinding.FragmentCategriesBinding
-import com.example.news.news.NewsFragment
 
 class categoriesFragment : Fragment() {
 
@@ -34,8 +34,8 @@ class categoriesFragment : Fragment() {
             R.string.sports, R.color.sport_color
         ),
         Categories(
-            "entertainment", R.drawable.politics,
-            R.string.Politics, R.color.Politics_color
+            "entertainment", R.drawable.entertainment,
+            R.string.entertainment, R.color.entertainment_color
         ),
         Categories(
             //
@@ -49,8 +49,8 @@ class categoriesFragment : Fragment() {
         ),
         Categories(
             //
-            "general", R.drawable.environment,
-            R.string.enviroment, R.color.enviroment_color
+            "general", R.drawable.general,
+            R.string.general, R.color.general_color
         ),
         Categories(
             //
@@ -59,8 +59,8 @@ class categoriesFragment : Fragment() {
         ),
         Categories(
             //
-            "technology", R.drawable.science,
-            R.string.technology, R.color.Science_color
+            "technology", R.drawable.technology,
+            R.string.technology, R.color.technology_color
         ),
     )
 
@@ -72,7 +72,10 @@ class categoriesFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentCategriesBinding.inflate(inflater, container, false)
 
-        activity?.findViewById<ImageView>(R.id.ic_search)?.visibility = View.GONE
+        activity?.findViewById<ImageView>(R.id.main_ic_search)?.visibility = View.GONE
+        activity?.findViewById<View>(R.id.search_view)?.visibility = View.GONE
+        activity?.findViewById<ImageView>(R.id.ic_menu)?.visibility = View.VISIBLE
+        activity?.findViewById<TextView>(R.id.toolbar_title_tv)?.text = getString(R.string.news)
 
         adapter = categries_adapter(categories, object : OnCategorySelectedListener {
             override fun onCategorySelected(category: Categories) {

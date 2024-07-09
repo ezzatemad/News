@@ -10,4 +10,7 @@ interface getNewsSourcesDataSource {
 
     suspend fun getNewsDataSource(source: String): List<Articles?>
 
+
+    suspend fun getSearchNewsDataSource(search: String): List<Articles?>
+
 }

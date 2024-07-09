@@ -18,4 +18,8 @@ class getNewsSourcesRepoImpl @Inject constructor(
     override suspend fun getNews(source: String): List<Articles?> {
         return getNewsSourcesDataSource.getNewsDataSource(source)
     }
+
+    override suspend fun getSearchNews(search: String): List<Articles?> {
+        return getNewsSourcesDataSource.getSearchNewsDataSource(search)
+    }
 }

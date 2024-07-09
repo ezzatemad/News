@@ -8,6 +8,9 @@ sealed class NewsState {
     data object Loading : NewsState()
     data class Success(val sources: List<Sources?>) : NewsState()
     data class LoadNews(val news: List<Articles?>) : NewsState()
+
+    data class LoadSearchNews(val searchNews: List<Articles?>) : NewsState()
+
     data class Error(val exception: String) : NewsState()
 
 }

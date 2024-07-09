@@ -36,4 +36,9 @@
             android:id="@+id/action_categoriesFragment_to_newsFragment"
             app:destination="@id/newsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.news.setting.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

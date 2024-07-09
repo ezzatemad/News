@@ -23,4 +23,10 @@ interface MyApiService {
         @Query("apiKey") key: String = Constant.apiKey,
         @Query("Sources") sources: String
     ): Response<NewsResponse>
+
+    @GET("/v2/everything")
+    suspend fun getSearchNews(
+        @Query("apiKey") key: String = Constant.apiKey,
+        @Query("q") searchIn: String
+    ): Response<NewsResponse>
 }

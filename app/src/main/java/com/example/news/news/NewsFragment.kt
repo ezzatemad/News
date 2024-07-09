@@ -1,11 +1,15 @@
 package com.example.news.news
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,8 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.news.Articles
 import com.example.domain.model.sources.Sources
 import com.example.news.R
-import com.example.news.article.ArticleFragmentArgs
-import com.example.news.catergories.categoriesFragment
 import com.example.news.databinding.FragmentNewsBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,16 +68,20 @@ class NewsFragment : Fragment() {
 
         // Hide toolbar icons based on your logic
         val toolBarMenu = activity?.findViewById<ImageView>(R.id.ic_menu)
-        val toolBarSearch = activity?.findViewById<ImageView>(R.id.ic_search)
+        val toolBarSearch = activity?.findViewById<ImageView>(R.id.main_ic_search)
         val toolBarArrow = activity?.findViewById<ImageView>(R.id.ic_back)
+        val toolBarTitle = activity?.findViewById<TextView>(R.id.toolbar_title_tv)
+
 
         toolBarMenu?.visibility = View.VISIBLE
         toolBarSearch?.visibility = View.VISIBLE
         toolBarArrow?.visibility = View.GONE
+        toolBarTitle?.text = args.categoryInfo?.apiID
+        toolBarTitle?.visibility = View.VISIBLE
 
 
         binding.newsRv.adapter = adapter
-        handleIntent(args.categoryInfo?.apiID!!)
+        handelIntent(args.categoryInfo?.apiID!!)
         Log.d("TAG", "onViewCreated: ${args.categoryInfo?.apiID}")
         setUpObserve()
 
@@ -86,6 +92,47 @@ class NewsFragment : Fragment() {
             binding.newsRv.layoutManager?.scrollToPosition(scrollPosition)
             binding.newsTabLayout.getTabAt(selectedTabIndex)?.select()
         }
+
+        //handel search
+        activity?.findViewById<EditText>(R.id.search_edit_text)
+            ?.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    Log.d("TAG", "onTextChanged: $s")
+                    // Implement search logic here
+                    s?.let {
+                        if (s.isNullOrBlank()) {
+                            // Clearing search text, reload original news
+                            clearSearch()
+                        } else {
+                            // Perform search based on new query
+                            handelSearchIntent(s.toString())
+                        }
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+
+//        activity?.findViewById<View>(R.id.search_view)?.findViewById<ImageView>(R.id.clear_icon)
+//            ?.setOnClickListener {
+//                handelTabIntent()
+//
+//            }
+    }
+
+    private fun clearSearch() {
+        // Reload the previous news based on the selected tab
+        val selectedTab = binding.newsTabLayout.getTabAt(selectedTabIndex)
+        val source = selectedTab?.tag as? Sources
+        source?.id?.let { handelTabIntent(it) }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -112,10 +159,16 @@ class NewsFragment : Fragment() {
                     adapter.bindNewNews(state.news)
                 }
 
+                is NewsState.LoadSearchNews -> {
+                    adapter.bindNewNews(state.searchNews)
+                }
+
+
                 is NewsState.Error -> {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(context, "Error: ${state.exception}", Toast.LENGTH_LONG).show()
                 }
+
             }
         })
     }
@@ -131,7 +184,7 @@ class NewsFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Sources
                 source.id?.let {
-                    sendTabIntent(it)
+                    handelTabIntent(it)
                 }
             }
 
@@ -139,26 +192,32 @@ class NewsFragment : Fragment() {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 val source = tab?.tag as Sources
-                source.id?.let { sendTabIntent(it) }
+                source.id?.let { handelTabIntent(it) }
             }
         })
         // Select the first tab initially if there are tabs available
         if (sources.isNotEmpty()) {
             binding.newsTabLayout.getTabAt(selectedTabIndex)?.select()
             val firstSourceId = sources[selectedTabIndex]?.id ?: ""
-            sendTabIntent(firstSourceId)
+            handelTabIntent(firstSourceId)
         }
     }
 
-    private fun sendTabIntent(sourceId: String) {
+    private fun handelTabIntent(sourceId: String) {
         lifecycleScope.launch {
             newsViewModel.channel.send(NewsIntent.LoadNews(sourceId))
         }
     }
 
-    fun handleIntent(sourceId: String) {
+    fun handelIntent(sourceId: String) {
         lifecycleScope.launch {
             newsViewModel.channel.send(NewsIntent.LoadSource(sourceId))
+        }
+    }
+
+    private fun handelSearchIntent(search: String) {
+        lifecycleScope.launch {
+            newsViewModel.channel.send(NewsIntent.LoadSearchNews(search))
         }
     }
 

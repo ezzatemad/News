@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -42,8 +42,15 @@ class ArticleFragment : Fragment() {
     private fun initView() {
         // Hide toolbar icons based on your logic
         val toolBarMenu = activity?.findViewById<ImageView>(R.id.ic_menu)
-        val toolBarSearch = activity?.findViewById<ImageView>(R.id.ic_search)
+        val toolBarSearch = activity?.findViewById<ImageView>(R.id.main_ic_search)
         val toolBarArrow = activity?.findViewById<ImageView>(R.id.ic_back)
+
+        toolBarArrow?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+
+
 
         toolBarMenu?.visibility = View.GONE
         toolBarSearch?.visibility = View.GONE
