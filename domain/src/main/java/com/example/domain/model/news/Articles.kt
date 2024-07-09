@@ -8,19 +8,22 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Articles(
 
-	val publishedAt: String? = null,
 
-	val author: String? = null,
+    val id: Int? = null,
 
-	val urlToImage: String? = null,
+    val publishedAt: String? = null,
 
-	val description: String? = null,
+    val author: String? = null,
 
-	val source: Sources? = null,
+    val urlToImage: String? = null,
 
-	val title: String? = null,
+    val description: String? = null,
 
-	val url: String? = null,
+    val source: Sources? = null,
 
-	val content: String? = null
+    val title: String? = null,
+
+    val url: String? = null,
+
+    val content: String? = null
 ) : Parcelable

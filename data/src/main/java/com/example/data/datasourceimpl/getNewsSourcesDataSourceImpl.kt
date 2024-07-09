@@ -12,25 +12,22 @@ import com.example.domain.model.sources.Sources
 import javax.inject.Inject
 
 class getNewsSourcesDataSourceImpl @Inject constructor(
-    val myApiService: MyApiService,
+    private val myApiService: MyApiService,
     private val sourceDao: SourcesDao,
     private val articlesDao: ArticlesDao
 ) : getNewsSourcesDataSource {
+
     override suspend fun getSourcesDataSource(source: String): List<Sources?> {
         val sourceResponse = myApiService.getSources(category = source)
         return if (sourceResponse.isSuccessful) {
             val sources = sourceResponse.body()?.sources ?: listOf()
+            Log.d("TAG", "getSourcesDataSource: $sources")
 
-            Log.d("TAG", "getNewsDataSource:ds $sources")
+            if (sources.isNotEmpty()) {
+                val sourceEntities = sources.mapNotNull { it?.let { SourceEntity.fromSources(it) } }
+                sourceDao.insertAll(sourceEntities)
+            }
 
-//            // Convert Sources to SourceEntity and save to Room database
-//            if (sources.isNotEmpty()) {
-//                val sourceEntities = sources.mapNotNull {
-//                    it?.let { SourceEntity.fromSources(it) }
-//                }
-//                sourceDao.insertAll(sourceEntities)
-//            }
-//
             sources
         } else {
             listOf()
@@ -41,17 +38,12 @@ class getNewsSourcesDataSourceImpl @Inject constructor(
         val newsResponse = myApiService.getNews(sources = source)
         return if (newsResponse.isSuccessful) {
             val articles = newsResponse.body()?.articles ?: listOf()
-            Log.d("TAG", "getNewsDataSource:ds $articles")
+            Log.d("TAG", "getNewsDataSource: $articles")
 
-//             Convert Sources to SourceEntity and save to Room database
-
-
-//            if (articles.isNotEmpty()) {
-//                val articlesEntities = articles.mapNotNull {
-//                    it?.let { ArticleEntity.fromArticles(it) }
-//                }
-//                articlesDao.insertAll(articlesEntities)
-//            }
+            if (articles.isNotEmpty()) {
+                val articleEntities = articles.mapNotNull { it?.let { ArticleEntity.fromArticles(it) } }
+                articlesDao.insertAll(articleEntities)
+            }
 
             articles
         } else {
