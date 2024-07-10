@@ -21,29 +21,33 @@ class getNewsSourcesDataSourceImpl @Inject constructor(
         val sourceResponse = myApiService.getSources(category = source)
         return if (sourceResponse.isSuccessful) {
             val sources = sourceResponse.body()?.sources ?: listOf()
-            Log.d("TAG", "getSourcesDataSource: $sources")
+            Log.d("TAG", "getSourcesDataSource: sources $sources")
 
             if (sources.isNotEmpty()) {
                 val sourceEntities = sources.mapNotNull { it?.let { SourceEntity.fromSources(it) } }
                 sourceDao.insertAll(sourceEntities)
             }
-
+            Log.d("TAG", "getSourcesDataSource sources local database: ${sourceDao.getAll()}")
             sources
+
         } else {
             listOf()
         }
     }
 
+
     override suspend fun getNewsDataSource(source: String): List<Articles?> {
         val newsResponse = myApiService.getNews(sources = source)
         return if (newsResponse.isSuccessful) {
             val articles = newsResponse.body()?.articles ?: listOf()
-            Log.d("TAG", "getNewsDataSource: $articles")
+            Log.d("TAG", "getNewsDataSource:news  $articles")
 
             if (articles.isNotEmpty()) {
-                val articleEntities = articles.mapNotNull { it?.let { ArticleEntity.fromArticles(it) } }
+                val articleEntities =
+                    articles.mapNotNull { it?.let { ArticleEntity.fromArticles(it) } }
                 articlesDao.insertAll(articleEntities)
             }
+            Log.d("TAG", "getSourcesDataSource  news local database: ${articlesDao.getAll()}")
 
             articles
         } else {
@@ -57,6 +61,24 @@ class getNewsSourcesDataSourceImpl @Inject constructor(
             searchResponse.body()?.articles ?: listOf()
         } else {
             listOf()
+        }
+    }
+
+    override suspend fun getLocalSourcesDataSource(source: String): List<Sources?> {
+        return sourceDao.getAll().map {
+            SourceEntity.toSources(it)
+        }
+    }
+
+    override suspend fun getLocalNewsDataSource(source: String): List<Articles?> {
+        return articlesDao.getAll().map {
+            ArticleEntity.toArticles(it)
+        }
+    }
+
+    override suspend fun getLocalSearchNewsDataSource(search: String): List<Articles?> {
+        return articlesDao.getAll().map {
+            ArticleEntity.toArticles(it)
         }
     }
 }

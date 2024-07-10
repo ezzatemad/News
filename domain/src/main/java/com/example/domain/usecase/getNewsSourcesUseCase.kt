@@ -22,4 +22,17 @@ class getNewsSourcesUseCase @Inject constructor(
     suspend fun getSearchNews(search: String): List<Articles?> {
         return newSourcesRepo.getSearchNews(search)
     }
+
+    suspend fun getLocalSources(source: String): List<Sources?> {
+        return newSourcesRepo.getLocalSources(source)
+    }
+
+
+    suspend fun getLocalNews(source: String): List<Articles?> {
+        return newSourcesRepo.getLocalNews(source)
+    }
+
+    suspend fun getLocalSearchNews(search: String): List<Articles?> {
+        return newSourcesRepo.getLocalSearchNews(search)
+    }
 }

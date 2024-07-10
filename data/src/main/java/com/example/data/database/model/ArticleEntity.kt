@@ -15,7 +15,7 @@ data class ArticleEntity(
     val author: String? = null,
     val urlToImage: String? = null,
     val description: String? = null,
-    val source: Sources? = null,
+//    val source: Sources? = null,
     val title: String? = null,
     val url: String? = null,
     val content: String? = null
@@ -27,10 +27,23 @@ data class ArticleEntity(
                 author = article.author,
                 urlToImage = article.urlToImage,
                 description = article.description,
-                source = article.source,
+//                source = article.source,
                 title = article.title,
                 url = article.url,
                 content = article.content
+            )
+        }
+
+        fun toArticles(entity: ArticleEntity): Articles {
+            return Articles(
+                publishedAt = entity.publishedAt,
+                author = entity.author,
+                urlToImage = entity.urlToImage,
+                description = entity.description,
+                title = entity.title,
+                url = entity.url,
+                content = entity.content,
+                id = entity.id
             )
         }
     }

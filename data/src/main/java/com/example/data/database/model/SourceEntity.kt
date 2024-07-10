@@ -26,5 +26,18 @@ data class SourceEntity(
                 url = source.url
             )
         }
+
+        fun toSources(entity: SourceEntity): Sources {
+            return Sources(
+                id = entity.id,
+                country = entity.country,
+                name = entity.name,
+                description = entity.description,
+                language = entity.language,
+                category = entity.category,
+                url = entity.url
+
+            )
+        }
     }
 }

@@ -4,8 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.data.database.dao.ArticlesDao
 import com.example.data.database.dao.SourcesDao
-import com.example.data.database.databasetable.ArticlesDataBase
-import com.example.data.database.databasetable.SourcesDataBase
+import com.example.data.database.databasetable.AppDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,39 +15,28 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RoomDataBaseModule {
 
+
+
 //    @Provides
 //    @Singleton
-//    fun provideSourcesRoomDatabase(
+//    fun provideSourceRoomDatabase(
 //        context: Context
 //    ): SourcesDataBase {
 //        return Room.databaseBuilder(
-//            context, SourcesDataBase::class.java, "SourceDB"
+//            context, SourcesDataBase::class.java, "SourcesDB"
 //        )
 //            .fallbackToDestructiveMigration()
 //            .build()
 //    }
-//
-
-    @Provides
-    @Singleton
-    fun provideSourceRoomDatabase(
-        context: Context
-    ): SourcesDataBase {
-        return Room.databaseBuilder(
-            context, SourcesDataBase::class.java, "SourcesDB"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
-    }
 
 
     @Provides
     @Singleton
-    fun provideArticleRoomDatabase(
+    fun provideAppRoomDatabase(
         context: Context
-    ): ArticlesDataBase {
+    ): AppDataBase {
         return Room.databaseBuilder(
-            context, ArticlesDataBase::class.java, "AppDB"
+            context, AppDataBase::class.java, "AppDB"
         )
             .fallbackToDestructiveMigration()
             .build()
@@ -57,7 +45,7 @@ class RoomDataBaseModule {
     @Singleton
     @Provides
     fun provideArticleDao(
-        appDataBase: ArticlesDataBase
+        appDataBase: AppDataBase
     ): ArticlesDao {
         return appDataBase.articlesDao()
     }
@@ -65,8 +53,8 @@ class RoomDataBaseModule {
     @Singleton
     @Provides
     fun provideSourcesDao(
-        sourcesDataBase: SourcesDataBase
+        appDataBase: AppDataBase
     ): SourcesDao {
-        return sourcesDataBase.sourcesDao()
+        return appDataBase.sourcesDao()
     }
 }

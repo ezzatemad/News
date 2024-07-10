@@ -11,4 +11,11 @@ interface getNewSourcesRepo {
 
 
     suspend fun getSearchNews(search: String): List<Articles?>
+
+    suspend fun getLocalSources(source: String): List<Sources?>
+
+    suspend fun getLocalNews(source: String): List<Articles?>
+
+    suspend fun getLocalSearchNews(search: String): List<Articles?>
+
 }

@@ -19,7 +19,7 @@ data class Articles(
 
     val description: String? = null,
 
-    val source: Sources? = null,
+//    val source: Sources? = null,
 
     val title: String? = null,
 
